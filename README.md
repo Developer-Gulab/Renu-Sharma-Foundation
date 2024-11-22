@@ -1,8 +1,8 @@
-# Renu-Sharma-Foundation
+# Renu Healthcare
 
-## Renushala - Folder/Files Explanation
+## Renu Healthcare - Folder/Files Explanation
 
-This README provides an overview of the folder structure and contents of the **Renushala** project.
+This README provides an overview of the folder structure and contents of the **Renu Healthcare** project.
 
 ---
 
@@ -10,27 +10,27 @@ This README provides an overview of the folder structure and contents of the **R
 
 ### `controllers/`
 - Contains logic for handling requests and processing data.
-- Example: Handle user authentication, job applications, etc.
+- Example: Handle **patient registrations**, **appointment scheduling**, and **billing**.
 
 ### `models/`
 - Defines schemas and models for database entities.
-- Example: Models for entities like **JobPost**, **User**, **Applications**.
+- Example: Models for entities like **Patient**, **Doctor**, **Appointment**, **Billing**.
 
 ### `routes/`
 - Contains route definitions for the application.
-- Example: Routes for **jobs**, **users**, **applications**.
+- Example: Routes for **patients**, **doctors**, **appointments**, **services**.
 
 ### `middlewares/`
 - Contains custom middleware functions.
-- Example: Middleware for **authentication**, logging, error handling, etc.
+- Example: Middleware for **authentication**, **authorization**, logging, and error handling.
 
 ### `config/`
 - Configuration files for the backend.
-- Example: **database connection settings**, environment configurations.
+- Example: **Database connection settings**, environment configurations, and API keys.
 
 ### `utils/`
 - Utility/helper functions for the backend.
-- Example: Functions for **validation**, **token generation**, **password hashing**.
+- Example: Functions for **data validation**, **token generation**, and **notification handling** (e.g., sending SMS or emails for appointment reminders).
 
 ### `server.js` or `app.js`
 - Main server file to initialize the backend server and manage routing.
@@ -45,19 +45,19 @@ This README provides an overview of the folder structure and contents of the **R
 ## **Frontend Folder Structure**
 
 ### `public/`
-- Contains the main HTML file (`index.html`) and static assets (images, fonts, etc.).
+- Contains the main HTML file (`index.html`) and static assets (e.g., images, logos, fonts).
 
 ### `src/components/`
 - Contains reusable UI components.
-- Example: **JobCard**, **Navbar**, **Footer** components.
+- Example: **AppointmentCard**, **Navbar**, **Footer**, **ServiceCard** components.
 
 ### `src/pages/`
 - Page-specific components for different sections of the website.
-- Example: **Home**, **JobListings**, **Login**, **Signup** pages.
+- Example: **Home**, **OurDoctors**, **BookAppointment**, **ContactUs** pages.
 
 ### `src/utils/`
 - Utility/helper functions for the frontend.
-- Example: Functions for making **API calls**, handling **form validations**, etc.
+- Example: Functions for making **API calls**, handling **form validations**, and **date formatting**.
 
 ### `src/styles/`
 - Contains the Tailwind CSS and custom styles for the frontend.
@@ -78,10 +78,11 @@ This README provides an overview of the folder structure and contents of the **R
 
 ### Technologies
 - **Node.js with Express.js**: For building the backend server.
-- **MongoDB**: A flexible and scalable database.
+- **MongoDB**: A flexible and scalable database for managing patient and service data.
 - **Mongoose**: For data modeling with MongoDB.
-- **JWT (JSON Web Tokens)**: For authentication.
-- **bcrypt.js**: For hashing passwords securely.
+- **JWT (JSON Web Tokens)**: For secure authentication.
+- **bcrypt.js**: For securely hashing user passwords.
+- **Nodemailer**: For sending email notifications and confirmations.
 
 ---
 
@@ -106,5 +107,6 @@ Ensure you have the following installed:
 5. Create a pull request.
 
 ---
+
 
 

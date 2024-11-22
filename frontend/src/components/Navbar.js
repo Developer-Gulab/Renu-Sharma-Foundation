@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <nav className="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
       <Link to="/" className="text-2xl font-bold">
-        Renushala
+        Renu Healthcare
       </Link>
       <div>
         <Link to="/login" className="px-4 py-2 bg-white text-blue-600 rounded-lg mr-4">

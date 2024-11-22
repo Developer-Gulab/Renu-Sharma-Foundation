@@ -10,54 +10,54 @@ const Home = () => {
 
       {/* Hero Section */}
       <header className="bg-blue-600 text-white text-center py-20">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Renushala</h1>
+        <h1 className="text-4xl font-bold mb-4">Welcome to Renu Healthcare</h1>
         <p className="text-lg mb-6">
-          Learn. Work. Earn Your Internship Certificate.
+          Your Health, Our Priority. Comprehensive Care for a Better Tomorrow.
         </p>
         <a
-          href="/signup"
+          href="/contact"
           className="bg-white text-blue-600 px-6 py-3 rounded-lg shadow-md hover:bg-gray-200 transition"
         >
-          Get Started
+          Contact Us
         </a>
       </header>
 
-      {/* Internship Categories */}
+      {/* Services Section */}
       <section className="py-12 px-6">
         <h2 className="text-3xl font-semibold text-center mb-8">
-          Explore Internship Categories
+          Our Services
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {[
-            { title: "Web Development", icon: "🌐" },
-            { title: "App Development", icon: "📱" },
-            { title: "Data Science", icon: "📊" },
-            { title: "UI/UX Design", icon: "🎨" },
-            { title: "Marketing", icon: "📈" },
-            { title: "Content Writing", icon: "✍️" },
-          ].map((category, index) => (
+            { title: "General Checkups", icon: "🩺" },
+            { title: "Diagnostics", icon: "🔬" },
+            { title: "Surgical Services", icon: "⚕️" },
+            { title: "Emergency Care", icon: "🚑" },
+            { title: "Pharmacy", icon: "💊" },
+            { title: "Vaccination", icon: "💉" },
+          ].map((service, index) => (
             <div
               key={index}
               className="bg-white shadow-md rounded-lg p-6 text-center hover:shadow-lg transition"
             >
-              <div className="text-4xl mb-4">{category.icon}</div>
-              <h3 className="text-lg font-medium">{category.title}</h3>
+              <div className="text-4xl mb-4">{service.icon}</div>
+              <h3 className="text-lg font-medium">{service.title}</h3>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Steps to Get Certified */}
+      {/* Steps to Better Health */}
       <section className="bg-gray-100 py-12 px-6">
         <h2 className="text-3xl font-semibold text-center mb-8">
-          How It Works
+          Your Journey to Better Health
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
           {[
-            { step: "1", title: "Login or Sign Up", desc: "Create your account to start." },
-            { step: "2", title: "Select an Internship", desc: "Pick the category you love." },
-            { step: "3", title: "Complete Tasks", desc: "Work on assignments & projects." },
-            { step: "4", title: "Get Certified", desc: "Receive your internship certificate." },
+            { step: "1", title: "Schedule an Appointment", desc: "Book online or visit us." },
+            { step: "2", title: "Consult Our Experts", desc: "Get personalized care plans." },
+            { step: "3", title: "Receive Treatment", desc: "Access world-class healthcare." },
+            { step: "4", title: "Stay Healthy", desc: "Follow up and maintain your well-being." },
           ].map((item, index) => (
             <div
               key={index}
