@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import DonateForm from '../Components/DonateForm';
+import DonateForm from '../components/DonateForm';
 import "../../public/css/donate.css"
 import { FiMail } from "react-icons/fi";
 import { IoCallOutline } from "react-icons/io5";
