@@ -1,0 +1,29 @@
+.heading {
+  text-shadow: 2px 2px 3px #bca9df;
+}
+
+.left {
+  animation: left-animation 2s ease-in;
+}
+
+@keyframes left-animation {
+  from {
+    transform: translate(-200px);
+  }
+  to {
+    transform: translate(0);
+  }
+}
+
+.right {
+  animation: right-animation 2s ease-in;
+}
+
+@keyframes right-animation {
+  from {
+    transform: translate(200px);
+  }
+  to {
+    transform: translate(0);
+  }
+}
