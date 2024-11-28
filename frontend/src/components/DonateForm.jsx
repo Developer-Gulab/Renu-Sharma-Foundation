@@ -1,12 +1,57 @@
-import React, { act, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const DonateForm = () => {
     const [activeIndex, setActiveIndex] = useState(null);
+    const [loading, setLoading] = useState(false);
     const customInput = useRef(null);
+    const [formData, setFormData] = useState({
+        fullName: '',
+        email: '',
+        recurring: 'one-time',
+        amount: '',
+    });
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
     const changeIndex = (i) => {
         setActiveIndex(activeIndex === i ? null : i);
         customInput.current.value = "";
+        if (i === 1) formData.amount = 10;
+        if (i === 2) formData.amount = 20;
+        if (i == 3) formData.amount = 50;
     }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const response = await axios.post('/api/donations/add-donation', formData);
+            console.log(response)
+            if (response?.data?.success) {
+                toast.success('Donation recorded successfully!');
+                setFormData({
+                    fullName: '',
+                    email: '',
+                    recurring: 'one-time',
+                    amount: '',
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.response?.data?.message || 'Error submitting donation');
+        } finally {
+            setLoading(false);
+            setActiveIndex("")
+        }
+    };
 
     return (
         <div
@@ -20,7 +65,7 @@ const DonateForm = () => {
             </div>
 
             {/* Form  */}
-            <form className="p-2 md:p-4 lg:p-6 space-y-6">
+            <form className="p-2 md:p-4 lg:p-6 space-y-6" onSubmit={handleSubmit}>
                 {/* Donation Amount  */}
                 <div>
                     <label htmlFor="amount" className="block text-[#281d77] font-medium"
@@ -49,9 +94,9 @@ const DonateForm = () => {
                         </button>
                         <input
                             ref={customInput}
-                            onChange={(e) => setActiveIndex(4)}
+                            onChange={(e) => { setActiveIndex(4); formData.amount = parseInt(e.target.value, 10); }}
                             type="number"
-                            id="amount"
+                            name='amount'
                             placeholder="Enter Amont"
                             className="flex-1 px-2 w-full lg:w-auto lg:px-4 py-2 border border-[#281d77] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#281d77]"
                         />
@@ -65,7 +110,9 @@ const DonateForm = () => {
                     </label>
                     <input
                         type="text"
-                        id="name"
+                        name='fullName'
+                        value={formData.fullName}
+                        onChange={handleChange}
                         placeholder="Enter your name"
                         className="w-full px-2 lg:px-4 py-2 mt-2 border border-[#281d77] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#281d77]"
                     />
@@ -76,7 +123,9 @@ const DonateForm = () => {
                     >Your Email</label>
                     <input
                         type="email"
-                        id="email"
+                        name='email'
+                        value={formData.email}
+                        onChange={handleChange}
                         placeholder="Enter your email"
                         className="w-full px-2 lg:px-4 py-2 mt-2 border border-[#281d77] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#281d77]"
                     />
@@ -88,6 +137,9 @@ const DonateForm = () => {
                     >Make it Recurring?</label>
                     <select
                         id="recurring"
+                        name='recurring'
+                        value={formData.recurring}
+                        onChange={handleChange}
                         className="w-full px-2 lg:px-4 py-2 mt-2 border border-[#281d77] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#281d77]"
                     >
                         <option value="one-time">One-Time</option>
@@ -99,9 +151,10 @@ const DonateForm = () => {
                 {/* Submit Button */}
                 <button
                     type="submit"
+                    disabled={loading}
                     className="w-full bg-[#292350] text-white px-2 lg:px-4 py-2 hover:text-[104%] font-semibold rounded-lg hover:bg-[#352896] transition duration-200"
                 >
-                    Donate Now
+                    {loading ? "Processing" : "Donate Now"}
                 </button>
             </form>
         </div>
