@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react'
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { loadStripe } from "@stripe/stripe-js";
+
 
 const DonateForm = () => {
     const [activeIndex, setActiveIndex] = useState(null);
@@ -9,7 +11,7 @@ const DonateForm = () => {
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
-        recurring: 'one-time',
+        phone: '',
         amount: '',
     });
 
@@ -33,19 +35,29 @@ const DonateForm = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('/api/donations/add-donation', formData);
-            console.log(response)
-            if (response?.data?.success) {
-                toast.success('Donation recorded successfully!');
-                setFormData({
-                    fullName: '',
-                    email: '',
-                    recurring: 'one-time',
-                    amount: '',
-                });
+            //Load stripe
+            const stripe = await loadStripe(import.meta.env.VITE_PUBLISABLEKEY);
+
+            //Call create checkout api
+            const { data: session } = await axios.post("http://localhost:8080/api/payment/create-checkout-session", formData);
+            const sessionId = session.sessionId;
+
+            if (sessionId) {
+                const result = await stripe.redirectToCheckout({
+                    sessionId: sessionId
+                })
+
+                if (result) {
+                    toast.success('Donation recorded successfully!');
+                    setFormData({
+                        fullName: '',
+                        email: '',
+                        phone: '',
+                        amount: '',
+                    });
+                }
             }
         } catch (error) {
-            console.log(error)
             toast.error(error.response?.data?.message || 'Error submitting donation');
         } finally {
             setLoading(false);
@@ -104,6 +116,7 @@ const DonateForm = () => {
                 </div>
 
                 {/* Personal Details  */}
+                {/* Name */}
                 <div>
                     <label htmlFor="name" className="block text-[#281d77] font-medium"
                     >Your Name *
@@ -117,7 +130,7 @@ const DonateForm = () => {
                         className="w-full px-2 lg:px-4 py-2 mt-2 border border-[#281d77] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#281d77]"
                     />
                 </div>
-
+                {/* Email */}
                 <div>
                     <label htmlFor="email" className="block text-[#281d77] font-medium"
                     >Your Email</label>
@@ -131,21 +144,18 @@ const DonateForm = () => {
                     />
                 </div>
 
-                {/* Recurring Donation  */}
+                {/*  Phone Number  */}
                 <div>
-                    <label htmlFor="recurring" className="block text-[#281d77] font-medium"
-                    >Make it Recurring?</label>
-                    <select
-                        id="recurring"
-                        name='recurring'
-                        value={formData.recurring}
-                        onChange={handleChange}
+                    <label htmlFor="phone" className="block text-[#281d77] font-medium"
+                    >Your Phone no.</label>
+                    <input
+                        type="text"
+                        name="phone"
+                        placeholder='Enter Phone no.'
                         className="w-full px-2 lg:px-4 py-2 mt-2 border border-[#281d77] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#281d77]"
-                    >
-                        <option value="one-time">One-Time</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="yearly">Yearly</option>
-                    </select>
+                        value={formData.phone}
+                        onChange={handleChange}
+                    />
                 </div>
 
                 {/* Submit Button */}

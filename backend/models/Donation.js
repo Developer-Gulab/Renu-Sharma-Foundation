@@ -9,20 +9,29 @@ const donationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  recurring: {
+  phone: {
+    type: Number,
+  },
+  customerId: {
     type: String,
-    enum: ["one-time", "monthly", "yearly"],
-    default: "one-time",
-    required: true,
   },
   amount: {
     type: Number,
     required: true,
   },
-  paymentStatus: {
+  currency: {
     type: String,
-    enum: ["pending", "completed", "failed"],
-    default: "pending",
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["succeeded", "failed", "pending"], // 'succeeded' or 'failed'
+    required: true,
+  },
+  paymentIntentId: {
+    type: String,
+    required: true,
+    unique: true,
   },
   createdAt: {
     type: Date,

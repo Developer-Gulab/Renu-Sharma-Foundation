@@ -1,5 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import DonatePage from "./Pages/DonatePage";
+import DonatePage from "./pages/DonatePage";
+import SuccessPage from "./pages/Success";
+import CancelPage from "./pages/Cancel";
 
 
 function App() {
@@ -8,7 +10,9 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<DonatePage />} />
+          <Route path="/donate-page" element={<DonatePage />} />
+          <Route path="/success" element={<SuccessPage />} />
+          <Route path="/cancel" element={<CancelPage />} />
         </Routes>
 
       </BrowserRouter>

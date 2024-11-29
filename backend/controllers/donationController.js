@@ -3,9 +3,9 @@ import Donation from "../models/Donation.js";
 //Add Donation Controller
 export const addDonation = async (req, res) => {
   try {
-    const { fullName, email, recurring, amount } = req.body;
+    const { fullName, email, phone, amount } = req.body;
 
-    if (!fullName || !email || !recurring || !amount) {
+    if (!fullName || !email || !phone || !amount) {
       return res.status(400).json({
         success: false,
         message: "Please provide all required field!",
@@ -15,7 +15,7 @@ export const addDonation = async (req, res) => {
     const donation = new Donation({
       fullName,
       email,
-      recurring,
+      phone,
       amount,
     });
 
@@ -50,5 +50,14 @@ export const getDonations = async (req, res) => {
       message: "Internal server error!",
       error: error.message,
     });
+  }
+};
+
+export const deleteDonations = async (req, res) => {
+  try {
+    await Donation.deleteMany();
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    return res.status(500).json({ success: false });
   }
 };
