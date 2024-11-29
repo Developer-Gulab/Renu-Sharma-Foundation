@@ -63,7 +63,7 @@ const LoginForm = () => {
 
     <div className=" w-[38%]  p-6 shadow-lg rounded-lg bg-white">
       <h2 className="text-2xl text-[34px] font-bold  text-gray-600 text-center mb-6 from-neutral-300">
-        Login <span className="text-[#1d4ed8]">!</span>
+        Sign Up <span className="text-[#1d4ed8]">!</span>
       </h2>
       <p className="mb-6 font-medium text-[#2e2e2ed7]">Explore, learn, and grow with us. enjoy a seamless and enriching educational journey. lets begin!</p>
       <form onSubmit={handleSubmit} noValidate>
