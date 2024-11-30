@@ -1,0 +1,140 @@
+.header-area {
+  position: relative;
+  padding: 20px;
+}
+.header-area::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  background: linear-gradient(270deg, #3c72fc 6.32%, #00060c 216.42%);
+  height: 100%;
+  content: "";
+  z-index: -1;
+  clip-path: polygon(0 0, 100% 0%, 90% 100%, 0% 100%);
+}
+
+@media (max-width: 1199px) {
+  .header-area::after {
+    width: 25%;
+  }
+}
+
+@media (max-width: 991px) {
+  .header-area::after {
+    width: 30%;
+  }
+}
+
+@media (max-width: 767px) {
+  .header-area::after {
+    width: 40%;
+  }
+}
+
+@media (max-width: 575px) {
+  .header-area::after {
+    width: 50%;
+  }
+}
+
+@media (max-width: 450px) {
+  .header-area::after {
+    width: 70%;
+  }
+}
+
+.header-area.menu-fixed {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background-color: var(--white);
+  z-index: 999;
+  box-shadow: var(--shadow);
+}
+
+.header__container {
+  max-width: 1350px;
+  padding: 0 15px;
+}
+
+.header__main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__main .main-menu ul {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+.header__main .main-menu ul li {
+  position: relative;
+}
+
+.header__main .main-menu ul li:hover {
+  color: #3c72fc;
+  font-size: 105%;
+}
+
+.btn-one {
+  padding: 10px 20px;
+  background-color: #3c72fc;
+  color: white;
+  font-weight: 600;
+  border-radius: 5px;
+}
+
+/* Mobile Menu Styles */
+.mobile-menu-icon {
+  display: none;
+  cursor: pointer;
+}
+
+.mobile-menu-icon .menu-icon {
+  width: 30px;
+  height: 3px;
+  background-color: #333;
+  margin: 6px 0;
+}
+
+.main-menu {
+  display: flex;
+  align-items: center;
+}
+
+.main-menu ul {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+@media (max-width: 767px) {
+  .header__main .main-menu ul {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 15px;
+    z-index: 999;
+  }
+
+  .main-menu.open ul {
+    display: flex;
+  }
+
+  .mobile-menu-icon {
+    display: block;
+  }
+
+  .btn-one {
+    margin-top: 15px;
+  }
+}

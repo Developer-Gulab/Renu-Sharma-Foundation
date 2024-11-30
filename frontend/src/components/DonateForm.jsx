@@ -33,15 +33,15 @@ const DonateForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-
+        console.log("submiting")
+        console.log(process.env.REACT_APP_PUBLISABLEKEY)
         try {
             //Load stripe
-            const stripe = await loadStripe(import.meta.env.VITE_PUBLISABLEKEY);
-
+            const stripe = await loadStripe(process.env.REACT_APP_PUBLISABLEKEY);
             //Call create checkout api
-            const { data: session } = await axios.post("http://localhost:8080/api/payment/create-checkout-session", formData);
+            const { data: session } = await axios.post("/api/payment/create-checkout-session", formData);
             const sessionId = session.sessionId;
-
+            console.log(session)
             if (sessionId) {
                 const result = await stripe.redirectToCheckout({
                     sessionId: sessionId
@@ -72,7 +72,7 @@ const DonateForm = () => {
             <div
                 className="bg-gradient-to-r bg-[#292350] lg:p-6  p-3 text-white text-center"
             >
-                <h1 className="text-2xl lg:text-3xl font-bold">Make a Difference</h1>
+                <h1 className="text-2xl lg:text-3xl font-bold text-white">Make a Difference</h1>
                 <p className="mt-2 text-purple-200">Your donation helps us change lives!</p>
             </div>
 
