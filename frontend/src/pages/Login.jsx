@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/api";
 import { useUser } from "../context/userContext";
@@ -14,40 +14,35 @@ const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useUser();
 
-  // Handle input changes
   const handleChange = ({ target: { name, value } }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Validate form input before submitting
   const validateForm = () => {
     const { email, password } = formData;
     if (!email || !password) {
       setError("Both fields are required.");
       return false;
     }
-    // Add more validation checks as needed (e.g., email format)
     return true;
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsLoading(true);
-    setError(""); // Reset error on new submission
+    setError("");
 
     try {
       const response = await api.post("/user/login", formData);
 
       if (response.data.status === "success") {
         setUser(response.data.user);
-        setFormData({ email: "", password: "" }); // Reset form data after successful login
+        setFormData({ email: "", password: "" });
         navigate("/dashboard");
       }
     } catch (err) {
-      console.error(err); // Log for debugging
       setError(err.response?.data?.message || "Login failed");
     } finally {
       setIsLoading(false);
@@ -55,70 +50,103 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8">
-        <form onSubmit={handleSubmit} className="bg-white p-8 shadow-lg rounded-lg">
-          <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 text-red-500 rounded-lg">
-              {error}
-            </div>
-          )}
+    <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center bg-blue-50">
+      {/* Left Side Image */}
+      <div
+        id="shadow-l"
+        className="lg:max-w-4xl flex justify-center lg:h-[512px] bg-blue-600 rounded-l-3xl"
+      >
+        <img
+          src="/LoginPageImages/signup.svg"
+          alt="LoginPageImage"
+          className="w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[512px] lg:h-[512px] object-contain animate-pulse"
+        />
+      </div>
 
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email Address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              />
-            </div>
+      {/* Right Side (Login Form) */}
+      <div
+        id="shadow-r"
+        className="p-8 rounded-r-3xl bg-white w-full max-w-lg lg:w-[350px] lg:h-[511.7px] flex flex-col justify-center"
+      >
+        <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2 text-center">
+          Log In
+        </h2>
+        <p className="text-gray-600 mb-8 text-center">Welcome back!</p>
 
-            <div className="relative">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                required
-                value={formData.password}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              />
-              <button
-                type="button"
-                className="absolute right-3 top-8"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? "👁" : "👁‍🗨"}
-              </button>
-            </div>
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 text-red-500 rounded-lg">
+            {error}
+          </div>
+        )}
+
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email Address"
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium"
+            />
+          </div>
+
+          <div className="relative">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              required
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-2 text-xl text-gray-500"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "👁" : "👁‍🗨"}
+            </button>
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="mt-6 w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+            className="w-full text-white p-2 hover:bg-blue-600 rounded-[12px] bg-blue-700"
           >
             {isLoading ? "Logging in..." : "Log In"}
           </button>
+        </form>
 
-          <p className="mt-4 text-center text-sm text-gray-600">
-            Don{"'"}t have an account?{" "}
-            <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+        <div className="mt-3 text-center">
+          <Link to={"/ForgotPassword"} className="text-blue-600 text-sm">
+            Forgot Password?
+          </Link>
+        </div>
+
+        <div className="mt-3">
+          <button className="w-full flex items-center justify-center text-black p-2 rounded-[12px] border border-black">
+            <img
+              src="https://img.icons8.com/color/24/000000/google-logo.png"
+              alt="Google logo"
+              className="w-5 h-5 mr-2"
+            />
+            Log in with Google
+          </button>
+        </div>
+
+        <div className="mt-3 text-center">
+          <p className="text-gray-600 font-semibold">
+            Don’t have an account?
+            <Link to="/signup" className="text-blue-500 font-medium ml-1">
               Sign up
             </Link>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   );

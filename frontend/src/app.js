@@ -5,6 +5,7 @@ import InternDashboard from "./pages/InternPanel.jsx";
 import ProjectOverview from "./pages/projectOverview.jsx";
 import cookies from "js-cookie";
 import PropTypes from "prop-types";
+import Home from "./pages/Home.js";
 
 const ProtectedRoute = ({ children }) => {
   const token = cookies.get("authToken");
