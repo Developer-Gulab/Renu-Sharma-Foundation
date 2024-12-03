@@ -1,14 +1,43 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import SignUp from "./pages/SignUp.jsx";
+import Login from "./pages/Login.jsx";
+import InternDashboard from "./pages/InternPanel.jsx";
+import ProjectOverview from "./pages/projectOverview.jsx";
+import cookies from "js-cookie";
+import PropTypes from "prop-types";
+import Home from "./pages/Home.js";
+
+const ProtectedRoute = ({ children }) => {
+  const token = cookies.get("authToken");
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node,
+};
 
 const App = () => {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home />} />
+      
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <InternDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/overview" element={<ProjectOverview />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 };
 

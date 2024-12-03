@@ -1,24 +1,73 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-require("dotenv").config();
+import express from "express";
+import { config } from "dotenv";
+import cors from "cors";
+import connectToDatabase from "./config/DataBase.js";
+import routes from "./routes/index.js";
+import cookieParser from "cookie-parser";
+import winston from "winston";
+import globalErrorHandler from "./controllers/globarErrorHandler.controller.js";
+
+config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
+
+// Connect to the database
+connectToDatabase();
+
+// Create a logger
+const logger = winston.createLogger({
+    level: "info",
+    format: winston.format.json(),
+    transports: [
+        new winston.transports.Console({
+            handleExceptions: true,
+        }),
+    ],
+    exitOnError: false,
+});
+
+// Middleware to log requests
+const requestLogger = (req, res, next) => {
+    const { method, url } = req;
+    logger.info({
+        message: "Incoming request",
+        method,
+        url,
+    });
+    next();
+};
+
+// CORS configuration
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL || "http://localhost:3000",
+        credentials: true,
+    })
+);
 
 // Middleware
-app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+app.use(requestLogger);
 
-//testing
+// Routes
+app.use("/api", routes);
 
-// Database Connection
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.error("MongoDB connection error:", err));
+app.use(globalErrorHandler);
 
-// Routes (add your routes in the `routes` folder)
-app.use("/api", require("./routes/someRoutesFile")); // Example route file
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        error: 'Route not found'
+    });
+});
 
-// Start Server
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is Running at port ${port}`);
+    logger.info(`Server is Running at port ${port}`);
+});
+
+export default app;
