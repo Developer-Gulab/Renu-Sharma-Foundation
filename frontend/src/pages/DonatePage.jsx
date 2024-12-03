@@ -106,7 +106,7 @@ const DonatePage = () => {
             <Navbar />
             <div className='bg-purple-50 min-h-screen pb-28 w-screen overflow-hidden'>
                 <div className='pb-4 relative'>
-                    <img src={heroImg} className=' max-h-[450px] max-w-screen w-screen opacity-85' alt="Donate Hero Image" />
+                    <img src={heroImg} className=' max-h-[450px] max-w-screen w-screen opacity-85 z-10' alt="Donate Hero Image" />
                     <div className=' text-center text-4xl font-semibold py-3 absolute inset-0 flex justify-center items-center '>
                         <p className=' text-3xl md:text-5xl lg:text-6xl text-[#281d77]  heading text-container' >Donate Some Happiness</p>
                     </div>
@@ -119,29 +119,46 @@ const DonatePage = () => {
                 <p className=' text-center pb-2 text-container px-2'>Fill the following details to provide your support for the cause</p>
                 <div>
                     <div className="flex flex-col lg:flex-row justify-center lg:items-center gap-3 lg:gap-8 ml-6 lg:ml-0 py-5 pb-14 text-container">
-                        <div className="flex justify-start lg:justify-center items-center gap-4">
-                            <MdOutlineLocationOn className="text-[#281d77] text-3xl" />
-                            <div>
-                                <p>Address</p>
-                                <p className="text-[16px] font-bold">
-                                    Gurugram, Haryana - 122503, India
-                                </p>
+
+                        <a
+                            href="https://www.google.com/maps/place/Haryana+122503/@28.3386399,76.7234886,12z/data=!3m1!4b1!4m6!3m5!1s0x390d40ee40f61ae9:0x7f08a0051c808b89!8m2!3d28.3308988!4d76.8028933!16s%2Fg%2F11_txzrjy?entry=ttu&g_ep=EgoyMDI0MTEyNC4xIKXMDSoASAFQAw%3D%3D"
+                            target="_blank"
+                            className=" "
+                        >
+                            <div className="flex justify-start lg:justify-center items-center gap-4">
+                                <MdOutlineLocationOn className="text-[#281d77] text-3xl" />
+                                <div>
+                                    <p>Address</p>
+                                    <p className="text-[16px] font-bold">
+                                        Gurugram, Haryana - 122503, India
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex justify-start lg:justify-center items-center gap-4">
-                            <IoCallOutline className="text-[#281d77] text-3xl" />
-                            <div>
-                                <p>Call Us</p>
-                                <p className="text-[16px] font-bold">+91-01234567890</p>
+                        </a>
+                        <a
+                            href="tel:+9101234567890"
+                            target="_blank"
+                        >
+                            <div className="flex justify-start lg:justify-center items-center gap-4">
+                                <IoCallOutline className="text-[#281d77] text-3xl" />
+                                <div>
+                                    <p>Call Us</p>
+                                    <p className="text-[16px] font-bold">+91-01234567890</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex justify-start lg:justify-center items-center gap-4">
-                            <FiMail className="text-[#281d77] text-3xl" />
-                            <div>
-                                <p>Email Us</p>
-                                <p className="text-[16px] font-bold">info@renuhealthcare.com</p>
+                        </a>
+                        <a
+                            href="mailto:info@admedusociety.org"
+                            target="_blank"
+                        >
+                            <div className="flex justify-start lg:justify-center items-center gap-4">
+                                <FiMail className="text-[#281d77] text-3xl" />
+                                <div>
+                                    <p>Email Us</p>
+                                    <p className="text-[16px] font-bold">info@renuhealthcare.com</p>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div className=' flex flex-col lg:flex-row items-center justify-center lg:px-16 px-3 w-screen gap-5'>
@@ -152,7 +169,7 @@ const DonatePage = () => {
                         <img ref={donateImg} src={donate1} alt="Donate Image" className=' lg:mx-7 rounded-lg ' />
                     </div>
                 </div>
-            </div>
+            </div >
             <Footer />
         </>
     )
