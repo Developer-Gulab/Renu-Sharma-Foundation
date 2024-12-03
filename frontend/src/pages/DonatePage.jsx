@@ -104,6 +104,9 @@ const DonatePage = () => {
     return (
         <>
             <Navbar />
+            <div>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti maiores incidunt dolore ipsam eligendi officia cum culpa qui maxime sit eaque ex, quisquam quam quaerat omnis, tempore aliquid repudiandae excepturi.
+            </div>
             <div className='bg-purple-50 min-h-screen pb-28 w-screen overflow-hidden'>
                 <div className='pb-4 relative'>
                     <img src={heroImg} className=' max-h-[450px] max-w-screen w-screen opacity-85 z-10' alt="Donate Hero Image" />
