@@ -1,0 +1,47 @@
+/* styles.css */
+
+.service-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 123, 255, 0.7); /* Adjust the opacity for better visibility */
+    transition: top 0.5s ease;
+    z-index: 0;
+  }
+  
+  .service-card:hover::before {
+    top: 0;
+  }
+  
+  .service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .service-card .card-body {
+    position: relative;
+    z-index: 1;
+    color: black; /* Default text color */
+  }
+  
+  .service-card .card-body i,
+  .service-card .card-body h3,
+  .service-card .card-body p {
+    transition: color 0.3s;
+  }
+  
+  .service-card:hover .card-body i,
+  .service-card:hover .card-body h3,
+  .service-card:hover .card-body p {
+    color: white; /* Ensure icon and text color remain visible */
+  }
+  
