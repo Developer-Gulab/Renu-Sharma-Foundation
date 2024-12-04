@@ -5,7 +5,17 @@ module.exports = {
     "./public/index.html"
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        shine: {
+          from: { '-webkit-mask-position': '150%' },
+          to: { '-webkit-mask-position': '-50%' },
+        },
+      },
+      animation: {
+        shine: 'shine 2s infinite',
+      },
+    },
   },
   plugins: [],
 };
