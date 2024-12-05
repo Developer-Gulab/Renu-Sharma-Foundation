@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import 'animate.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 

@@ -39,7 +39,12 @@ This README provides an overview of the folder structure and contents of the **R
 ### `.env`
 - Environment variables file.
 - Example: Store **MongoDB connection string**, **JWT secret**, and other environment-specific variables.
-
+- MONGO_URI
+- CLOUDINARY_CLOUD_NAME
+- CLOUDINARY_API_KEY
+- CLOUDINARY_API_SECRET
+- JWT_SECRET_KEY
+- NODE_ENV
 ---
 
 ## **Frontend Folder Structure**
