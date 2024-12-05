@@ -6,7 +6,7 @@ import ProjectOverview from "./pages/projectOverview.jsx";
 import cookies from "js-cookie";
 import PropTypes from "prop-types";
 import Home from "./pages/Home.js";
-
+import AboutPages from "./pages/Aboutpages.js";
 const ProtectedRoute = ({ children }) => {
   const token = cookies.get("authToken");
   if (!token) {
@@ -35,6 +35,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+         <Route path="/aboutpages" element={<AboutPages />} />
         <Route path="/overview" element={<ProjectOverview />} />
       </Routes>
     </BrowserRouter>
