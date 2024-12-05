@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
-import '../App.css'; // Adjust the path if needed
+import '../App.css'; 
 import myImage from '../images/Aboutimages/b5f53251-f7ee-4a28-be34-414387c85966.jpeg';
 
 
@@ -96,7 +96,7 @@ const AboutPages = () => {
     Welcome To Welfare Organization
     <span> Established Since 2015</span>
   </h3>
-  <p className="mt-4 text-sm sm:text-md md:text-lg text-black leading-relaxed font-semibold">
+  <p className="mt-4 text-sm sm:text-md md:text-lg text-black leading-relaxed font-medium">
     The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
     On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their.
   </p>
@@ -156,7 +156,7 @@ const AboutPages = () => {
   <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black">
     Our Vision
   </h3>
-  <p className="mt-4 text-sm sm:text-md md:text-lg text-black leading-relaxed font-semibold">
+  <p className="mt-4 text-sm sm:text-md md:text-lg text-black leading-relaxed font-medium">
     To create a world where all individuals have equal access to basic human rights, education, healthcare, and opportunities for sustainable livelihoods. We envision empowered communities working together to overcome poverty, injustice, and environmental degradation, fostering a global society built on dignity, equality, and compassion.
   </p>
 </div>
@@ -171,7 +171,7 @@ const AboutPages = () => {
             alt=""
           />
 
-          {/* Black Gradient Overlay */}
+        
           <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent rounded-md"></div>
 
           {/* Text Content */}
@@ -202,26 +202,40 @@ const AboutPages = () => {
 
         {/* added image and form section */}
 
-        <div className="flex flex-col md:flex-row m-3 bg-[#0f0d1d]" >
+        <div className="flex flex-col md:flex-row m-3 " >
           {/* Image Section */}
-          <div className="w-full md:w-1/2 flex justify-center">
-            <img
-              className="w-full h-full md:h-auto rounded-md m-3 object-cover"
-              src={require('../images/Aboutimages/Pixabay-2808899 - Copy.jpg')}
-              alt=""
-            />
-          </div>
+          <div className="w-full md:w-1/2 flex justify-center relative group overflow-hidden rounded-lg">
+    {/* Image */}
+    <img
+      className="w-full h-full md:h-auto rounded-md m-3 object-cover transition-transform duration-500 ease-in-out transform group-hover:scale-110"
+      src={require('../images/Aboutimages/Pixabay-2808899 - Copy.jpg')}
+      alt=""
+    />
+
+    {/* Blue Overlay Animation */}
+    <div
+      className="absolute inset-0 bg-gradient-to-t from-blue-500 to-transparent opacity-0 group-hover:opacity-80 group-hover:translate-y-0 translate-y-full transition-all duration-500 ease-in-out"
+    ></div>
+
+    {/* Text Overlay */}
+    <div className="absolute inset-0 flex items-end p-6 opacity-100 text-white">
+      <div className="text-left">
+        <h2 className="text-2xl font-bold"></h2>
+        <p className="text-lg font-bold"></p>
+      </div>
+    </div>
+  </div>
 
           {/* Form Section */}
           <div className="w-full md:w-1/2 sm:ml-2 flex flex-col justify-center mr-[10px]" >
             <div className="text-center pb-2">
-              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-white mb-[10px]" >
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-black mb-[10px]" >
                 Any Suggestion for us
               </h1>
             </div>
             <div className="border shadow-md rounded-xl">
               <form className="flex flex-col p-3">
-                <label className="mb-2 font-semibold text-white">Name</label>
+                <label className="mb-2 font-semibold text-black">Name</label>
                 <input
                   className="mb-4 p-2 border border-gray-300 rounded-lg"
                   type="text"
@@ -229,21 +243,24 @@ const AboutPages = () => {
                   required
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
-                  }}
+                  }} 
+                  style={{borderColor:"black"}}
                 />
-                <label className="mb-2 font-semibold text-white">Email</label>
+                <label className="mb-2 font-semibold text-black">Email</label>
                 <input
                   className="mb-4 p-2 border border-gray-300 rounded-lg"
                   required
                   type="email"
                   placeholder="Email..."
+                  style={{borderColor:"black"}}
                 />
-                <label className="mb-2 font-semibold text-white">Suggestion</label>
+                <label className="mb-2 font-semibold text-black">Suggestion</label>
                 <input
                   className="mb-4 p-2 border rounded-lg
                    border-gray-300"
                   required
                   placeholder="Your suggestion..."
+                  style={{borderColor:"black"}}
                 />
                <button className="relative overflow-hidden bg-blue-500 text-white px-3 py-2 rounded-md text-xs sm:text-sm md:text-base transition-all duration-500 ease-in-out group">
   <span className="relative z-10">Submit</span>
