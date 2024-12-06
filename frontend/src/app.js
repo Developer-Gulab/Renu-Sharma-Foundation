@@ -8,6 +8,10 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import InternDashboard from "./pages/InternPanel";
 import ProjectOverview from "./pages/projectOverview";
+import DonatePage from "./pages/DonatePage";
+import { Toaster } from "react-hot-toast";
+import SuccessPage from "./pages/Success";
+import CancelPage from "./pages/Cancel";
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children }) => {
@@ -22,33 +26,37 @@ ProtectedRoute.propTypes = {
 // Main App Component
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
-        
-        <Route path="/ContactPage" element={<ContactPage/>}/>
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <InternDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/overview"
-          element={
-            <ProtectedRoute>
-              <ProjectOverview />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <Toaster />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/ContactPage" element={<ContactPage/>}/>
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <InternDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/overview"
+            element={
+              <ProtectedRoute>
+                <ProjectOverview />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/donate-page" element={<DonatePage />} />
+          <Route path="/success" element={<SuccessPage />} />
+          <Route path="/cancel" element={<CancelPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 };
 
 export default App;
-

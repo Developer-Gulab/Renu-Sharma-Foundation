@@ -1,12 +1,54 @@
-*{
+* {
   font-family: "Montserrat", sans-serif;
 }
 
-#shadow-l{
+#shadow-l {
   box-shadow: 0px 0px 20px 2px darkblue;
 }
 
-#shadow-r{
+#shadow-r {
   box-shadow: 5px 0px 25px -2px darkblue;
+}
+
+.heading-shadow {
+  text-shadow: 3px 3px 3px #15003c;
+}
+
+.header-area::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28%;
+  background: linear-gradient(270deg, #281d77 6.32%, #00060c 216.42%);
+  height: 100%;
+  content: "";
+  z-index: -1;
+  clip-path: polygon(0 0, 100% 0%, 90% 100%, 0% 100%);
+}
+
+.left {
+  animation: left-animation 2s ease-in;
+}
+
+@keyframes left-animation {
+  from {
+    transform: translate(-200px);
+  }
+  to {
+    transform: translate(0);
+  }
+}
+
+.right {
+  animation: right-animation 2s ease-in;
+}
+
+@keyframes right-animation {
+  from {
+    transform: translate(200px);
+  }
+  to {
+    transform: translate(0);
+  }
 }
 
