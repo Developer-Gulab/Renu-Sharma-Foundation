@@ -5,6 +5,7 @@ import submissionRouter from "../routes/submission.routes.js";
 import TaskRouter from "../routes/task.routes.js";
 import ProjectRouter from "../routes/project.routes.js";
 import certificateRouter from "../routes/certificate.routes.js";
+import contactRoutes from './contactRoutes.js';
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use("/submission", submissionRouter);
 router.use("/task", TaskRouter);
 router.use("/project", ProjectRouter);
 router.use("/certificate", certificateRouter);
+router.use("/contact", contactRoutes);
 
 export default router;
