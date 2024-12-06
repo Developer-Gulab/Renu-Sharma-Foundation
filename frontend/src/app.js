@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import cookies from "js-cookie";
 import PropTypes from "prop-types";
-
+import ContactPage from "./pages/ContactPage";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
@@ -27,6 +27,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        
+        <Route path="/ContactPage" element={<ContactPage/>}/>
         <Route
           path="/dashboard"
           element={
