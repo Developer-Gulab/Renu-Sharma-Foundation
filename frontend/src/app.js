@@ -2,12 +2,12 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import cookies from "js-cookie";
 import PropTypes from "prop-types";
-
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import InternDashboard from "./pages/InternPanel";
 import ProjectOverview from "./pages/ProjectOverview";
+import Internship from "./pages/Internship";
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children }) => {
@@ -27,6 +27,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/internship" element={<Internship />} />
         <Route
           path="/dashboard"
           element={
