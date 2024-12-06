@@ -1,28 +1,74 @@
-import express from "express";
-import dotenv from "dotenv";
-import { connectWithDB } from "./config/db.js";
-import donationRoutes from "./routes/donationRoutes.js";
-import paymentRoutes from "./routes/paymentRoutes.js";
+
+import { config } from "dotenv";
 import cors from "cors";
-import { handleWebhook } from "./controllers/paymentController.js";
-dotenv.config();
-const PORT = process.env.PORT || 5000;
+import connectToDatabase from "./config/DataBase.js";
+import routes from "./routes/index.js";
+import cookieParser from "cookie-parser";
+import winston from "winston";
+import globalErrorHandler from "./controllers/globarErrorHandler.controller.js";
+
+config();
+
 const app = express();
+const port = process.env.PORT || 5000;
 
-//Connect database
-connectWithDB();
+// Connect to the database
+connectToDatabase();
 
-//webhook routes
-app.post("/webhook", express.raw({ type: "application/json" }), handleWebhook);
+// Create a logger
+const logger = winston.createLogger({
+    level: "info",
+    format: winston.format.json(),
+    transports: [
+        new winston.transports.Console({
+            handleExceptions: true,
+        }),
+    ],
+    exitOnError: false,
+});
+
+// Middleware to log requests
+const requestLogger = (req, res, next) => {
+    const { method, url } = req;
+    logger.info({
+        message: "Incoming request",
+        method,
+        url,
+    });
+    next();
+};
+
+// CORS configuration
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL || "http://localhost:3000",
+        credentials: true,
+    })
+);
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(requestLogger);
 
 // Routes
-app.use("/api/donations", donationRoutes);
-app.use("/api/payment", paymentRoutes);
+app.use("/api", routes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.use(globalErrorHandler);
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        error: 'Route not found'
+    });
 });
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is Running at port ${port}`);
+    logger.info(`Server is Running at port ${port}`);
+});
+
+export default app;
+>>>>>>> eb6d2d33afd6ad05b0345545738b9a52d45a38a5
