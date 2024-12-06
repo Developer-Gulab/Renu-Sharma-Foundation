@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import InternDashboard from "./pages/InternPanel";
-import ProjectOverview from "./pages/ProjectOverview";
+import ProjectOverview from "./pages/projectOverview";
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children }) => {
