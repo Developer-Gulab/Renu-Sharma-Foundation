@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import dotenv from "dotenv";
-import Donation from "../models/Donation.js";
+import Donation from "../models/Donation.models.js";
 dotenv.config();
 const stripe = new Stripe(process.env.STRIPESECRETKEY);
 

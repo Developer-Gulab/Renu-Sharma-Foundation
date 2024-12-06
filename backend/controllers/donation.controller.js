@@ -1,4 +1,4 @@
-import Donation from "../models/Donation.js";
+import Donation from "../models/Donation.models.js";
 
 //Add Donation Controller
 export const addDonation = async (req, res) => {
@@ -50,14 +50,5 @@ export const getDonations = async (req, res) => {
       message: "Internal server error!",
       error: error.message,
     });
-  }
-};
-
-export const deleteDonations = async (req, res) => {
-  try {
-    await Donation.deleteMany();
-    return res.status(200).json({ success: true });
-  } catch (error) {
-    return res.status(500).json({ success: false });
   }
 };

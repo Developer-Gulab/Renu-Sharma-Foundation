@@ -2,7 +2,7 @@ import express from "express";
 import {
   addDonation,
   getDonations,
-} from "../controllers/donationController.js";
+} from "../controllers/donation.controllers.js";
 
 const router = express.Router();
 
