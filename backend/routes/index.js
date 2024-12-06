@@ -1,10 +1,10 @@
 import express from "express";
-import userRouter from "../routes/user.routes.js";
-import departmentRouter from "../routes/department.routes.js";
-import submissionRouter from "../routes/submission.routes.js";
-import TaskRouter from "../routes/task.routes.js";
-import ProjectRouter from "../routes/project.routes.js";
-import certificateRouter from "../routes/certificate.routes.js";
+import userRouter from "./user.routes.js";
+import departmentRouter from "./department.routes.js";
+import submissionRouter from "./submission.routes.js";
+import TaskRouter from "./task.routes.js";
+import ProjectRouter from "./project.routes.js";
+import certificateRouter from "./certificate.routes.js";
 
 const router = express.Router();
 
