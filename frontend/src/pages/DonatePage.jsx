@@ -101,7 +101,7 @@ const DonatePage = () => {
             <div className='bg-purple-50 min-h-screen pb-28 w-screen overflow-hidden'>
                 <div className='pb-4 relative'>
                     <img src="/assets/images/DonateImg/heroDonate.jpg" className=' max-h-[450px] max-w-screen w-screen opacity-85 z-10' alt="Donate Hero Image" />
-                    <div className=' text-center text-4xl font-semibold py-3 absolute inset-0 flex justify-center items-center '>
+                    <div className=' text-center text-4xl font-semibold py-3 absolute inset-0 flex justify-center items-center mx-2'>
                         <p className=' text-3xl md:text-5xl lg:text-6xl text-white heading-shadow text-container p-1 bg-blue-700 rounded-sm ' >Donate Some Happiness</p>
                     </div>
                 </div>
@@ -155,12 +155,12 @@ const DonatePage = () => {
                         </a>
                     </div>
                 </div>
-                <div className=' flex flex-col lg:flex-row items-center justify-center lg:px-16 px-3 w-screen gap-5'>
-                    <div className=' left-animated order-2 lg:order-1 '>
+                <div className=' flex flex-col lg:flex-row items-center justify-center xl:!px-16 !px-3 w-screen gap-5 h-fit'>
+                    <div className=' left-animated !order-2 lg:!order-1 w-full lg:w-[80%] xl:w-auto px-2  '>
                         <DonateForm />
                     </div>
-                    <div className='w-full md:w-[90%] lg:w-[60%]  right-animated order-1 lg:order-2 overflow-hidden max-h-[80%]'>
-                        <img ref={donateImg} src="/assets/images/DonateImg/donate1.jpg" alt="Donate Image" className=' lg:mx-7 rounded-lg ' />
+                    <div className='relative w-full md:w-[90%] lg:w-full h-full lg:max-h-auto xl:w-[60%] !order-1 lg:!order-2 overflow-hidden right-animated'>
+                        <img ref={donateImg} src="/assets/images/DonateImg/donate1.jpg" alt="Donate Image" className=' lg:h-[500px] xl:h-auto  xl:mx-7 rounded-lg hover:!opacity-85 transition-all ease-in' />
                     </div>
                 </div>
             </div >
