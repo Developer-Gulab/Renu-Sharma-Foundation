@@ -30,6 +30,7 @@ const SignUp = () => {
     endDate: "",
   });
 
+  
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const { setUser } = useUser();
