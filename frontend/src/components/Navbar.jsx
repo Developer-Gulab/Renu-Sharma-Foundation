@@ -10,7 +10,10 @@ const Navbar = () => {
           <button className="px-4 py-2 bg-white text-blue-800 rounded-md mr-2 hover:bg-blue-100">Login</button>
         </Link>
         <Link to="/signup">
-          <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">Signup</button>
+          <button className="px-4 py-2 bg-purple-600 text-white mr-2 rounded-md hover:bg-purple-700">Signup</button>
+        </Link>
+        <Link to="/ContactPage">
+          <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">Contact</button>
         </Link>
       </div>
     </nav>

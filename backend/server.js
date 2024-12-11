@@ -17,33 +17,33 @@ connectToDatabase();
 
 // Create a logger
 const logger = winston.createLogger({
-    level: "info",
-    format: winston.format.json(),
-    transports: [
-        new winston.transports.Console({
-            handleExceptions: true,
-        }),
-    ],
-    exitOnError: false,
+  level: "info",
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console({
+      handleExceptions: true,
+    }),
+  ],
+  exitOnError: false,
 });
 
 // Middleware to log requests
 const requestLogger = (req, res, next) => {
-    const { method, url } = req;
-    logger.info({
-        message: "Incoming request",
-        method,
-        url,
-    });
-    next();
+  const { method, url } = req;
+  logger.info({
+    message: "Incoming request",
+    method,
+    url,
+  });
+  next();
 };
 
 // CORS configuration
 app.use(
-    cors({
-        origin: process.env.CLIENT_URL || "http://localhost:3000",
-        credentials: true,
-    })
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    credentials: true,
+  })
 );
 
 // Middleware
@@ -58,16 +58,16 @@ app.use(globalErrorHandler);
 
 // 404 handler
 app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        error: 'Route not found'
-    });
+  res.status(404).json({
+    success: false,
+    error: "Route not found",
+  });
 });
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server is Running at port ${port}`);
-    logger.info(`Server is Running at port ${port}`);
+  console.log(`Server is Running at port ${port}`);
+  logger.info(`Server is Running at port ${port}`);
 });
 
 export default app;
