@@ -12,6 +12,7 @@ import DonatePage from "./pages/DonatePage";
 import { Toaster } from "react-hot-toast";
 import SuccessPage from "./pages/Success";
 import CancelPage from "./pages/Cancel";
+import Internship from './pages/Internship'
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children }) => {
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/ContactPage" element={<ContactPage/>}/>
+          <Route path="/internship" element={<Internship/>}/>
           <Route
             path="/dashboard"
             element={

@@ -1,5 +1,5 @@
 import React from 'react';
-import images from './image2.jpeg';
+import images from '../images/internship.jpeg';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
