@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import '../App.css'; 
-import myImage from '../images/Aboutimages/b5f53251-f7ee-4a28-be34-414387c85966.jpeg';
+import myImage from '../images/Aboutimages/aboutusimage.jpg';
 
 
 const AboutPages = () => { 
@@ -13,7 +13,7 @@ const AboutPages = () => {
 <div className="overflow-hidden">
   <div className="banner__inner-page">
     {/* Hero Section with Background Gradient */}
-    <div className="relative w-full h-[455px] bg-gradient-to-r from-gray-900 to-blue-800 opacity-85">
+    <div className="relative w-full h-[235px] bg-gradient-to-r from-gray-900 to-blue-800 opacity-85">
       
     {/* Heading with Fade-in Effect */}
 <div className="absolute top-1/2 left-[15rem] transform -translate-y-1/2 z-10">
@@ -31,17 +31,20 @@ const AboutPages = () => {
 
 
       {/* Image with subtle scaling effect on the left side */}
-      <div className="absolute left-0 top-2/3 transform -translate-y-1/2 z-10">
+      <div className="absolute left-0 top-1/3 transform -translate-y-1/2 z-10">
         <img className="sway_scale" src={require('../images/Aboutimages/inner-banner-shape2.png')}alt=""  />
    
       </div>
-      <div className="absolute left-0 top-1/2">
+      <div className="absolute left-0 top-2/4 transform -translate-y-1/2">
+ 
+
+
       <img className="sway_scale h-[224px]"  src={require('../images/Aboutimages/inner-banner-shape1.png')} alt=" " />
       </div>
      
 
       {/* Image with sway animation on the right side */}
-      <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
+      <div className="absolute right-0 top-2 transform -translate-y-1/2 z-10">
         <img className="sway_animationX" src={require('../images/Aboutimages/inner-banner-shape3.png')} alt="" />
       </div>
 
@@ -86,20 +89,21 @@ const AboutPages = () => {
 
 
         <div
-  className="mb-4 flex rounded-sm items-center h-52 sm:h-96 md:h-[40rem] justify-center w-full bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${myImage})` }}
+  className="mb-4 flex rounded-sm items-center h-52 sm:h-96 md:h-[50rem] justify-center w-full bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${myImage})` }}
 ></div>
 
         {/* Content Section */}
         <div id="2" className="lg:px-20 lg:flex my-24 sm:mx-4 overflow-hidden">
         <div className="w-full lg:w-1/2 px-4 mt-6 lg:mt-0">
-  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">
-    Welcome To Welfare Organization
-    <span> Established Since 2015</span>
+        <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black">
+        Welcome To Welfare Organization
+    <span className="font-light text-gray-600"> Established Since 2015</span>
   </h3>
-  <p className="mt-4 text-sm sm:text-md md:text-lg text-black leading-relaxed font-medium">
-    The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
-    On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their.
-  </p>
+  <p className="mt-4 text-sm sm:text-md md:text-lg text-black leading-relaxed font-poppins font-medium">
+  The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+  On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their.
+</p>
+
 </div>
 
           <div className="lg:w-1/2 px-4 relative group overflow-hidden rounded-lg">
