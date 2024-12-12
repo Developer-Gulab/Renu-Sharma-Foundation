@@ -13,7 +13,7 @@ const AboutPages = () => {
 <div className="overflow-hidden">
   <div className="banner__inner-page">
     {/* Hero Section with Background Gradient */}
-    <div className="relative w-full h-[235px] bg-gradient-to-r from-gray-900 to-blue-800 opacity-85">
+    <div className="relative w-full h-[190px] bg-gradient-to-r from-gray-900 to-blue-800 opacity-85">
       
     {/* Heading with Fade-in Effect */}
 <div className="absolute top-1/2 left-[15rem] transform -translate-y-1/2 z-10">
@@ -35,7 +35,7 @@ const AboutPages = () => {
         <img className="sway_scale" src={require('../images/Aboutimages/inner-banner-shape2.png')}alt=""  />
    
       </div>
-      <div className="absolute left-0 top-2/4 transform -translate-y-1/2">
+      <div className="absolute left-0 top-20 transform -translate-y-1/2">
  
 
 
@@ -44,7 +44,7 @@ const AboutPages = () => {
      
 
       {/* Image with sway animation on the right side */}
-      <div className="absolute right-0 top-2 transform -translate-y-1/2 z-10">
+      <div className="absolute right-0 top-[30%]  transform -translate-y-1/2 z-10">
         <img className="sway_animationX" src={require('../images/Aboutimages/inner-banner-shape3.png')} alt="" />
       </div>
 
