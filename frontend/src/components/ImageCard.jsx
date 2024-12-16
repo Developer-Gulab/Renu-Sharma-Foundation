@@ -23,7 +23,7 @@ const ImageCard = ({ image, onClick }) => {
     >
       {inView ? (
         <img
-          src={image.src}
+          src={image}
           alt={image.alt}
           className="w-full h-64 object-cover transition duration-300 hover:opacity-80"
         />

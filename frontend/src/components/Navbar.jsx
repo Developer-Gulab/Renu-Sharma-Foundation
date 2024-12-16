@@ -25,8 +25,12 @@ const Navbar = () => {
       page: "Internship",
       path: PATHS.INTERNSHIP,
     },
+    {
+      page: "Gallery",
+      path: PATHS.GALLERY,
+    },
   ];
-
+  
   return (
     <nav className="bg-blue-800 text-white py-4 px-6 flex justify-between items-center shadow-md">
       <motion.div

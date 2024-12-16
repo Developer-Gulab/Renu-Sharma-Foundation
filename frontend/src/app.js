@@ -48,7 +48,7 @@ const App = () => {
           <Route path={PATHS.LOGIN} element={<Login />} />
           <Route path={PATHS.CONTACT} element={<ContactPage />} />
           <Route path={PATHS.INTERNSHIP} element={<Internship />} />
-          <Route path="/gallery" element={<GalleryPage/>} />
+          <Route path={PATHS.GALLERY} element={<GalleryPage/>} />
           <Route
             path={PATHS.DASHBOARD}
             element={

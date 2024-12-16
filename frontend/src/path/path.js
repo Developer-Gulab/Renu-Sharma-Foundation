@@ -8,5 +8,6 @@ export const PATHS = {
   DONATE: "/donate",
   SUCCESS: "/success",
   CANCEL: "/cancel",
-  INTERNSHIP: '/intership'
+  INTERNSHIP: '/intership',
+  GALLERY:'/gallery'
 };

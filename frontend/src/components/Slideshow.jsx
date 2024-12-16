@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Slideshow = ({ imageList }) => {
+  console.log(imageList);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [randomImages, setRandomImages] = useState([]);
 
@@ -43,7 +44,7 @@ const Slideshow = ({ imageList }) => {
         <AnimatePresence>
           <motion.img
             key={currentIndex}
-            src={randomImages[currentIndex].src}
+            src={randomImages[currentIndex]}
             alt={`Slide ${currentIndex + 1}`}
             className="absolute w-full h-full object-cover"
             initial={{ opacity: 0, x: 100 }}
