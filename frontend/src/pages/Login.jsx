@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/api";
 import { useUser } from "../context/userContext";
-import "../styles/custom.css"
-import img from "../images/loginimage.svg";
+import "../styles/custom.css";
+
+import loginImage from "../images/loginimage.svg";
+import Navbar from "../components/Navbar";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -16,25 +18,45 @@ const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useUser();
 
-  const handleChange = ({ target: { name, value } }) => {
+  const handleChange = useCallback(({ target: { name, value } }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  }, []);
 
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const { email, password } = formData;
     if (!email || !password) {
       setError("Both fields are required.");
       return false;
     }
-    return true;
-  };
+    
+    // Email or phone number validation
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const phoneRegex = /^\d{10}$/;
+    if (!emailRegex.test(email) && !phoneRegex.test(email)) {
+      setError("Please enter a valid email or 10-digit phone number.");
+      return false;
+    }
 
-  const handleSubmit = async (e) => {
+    // Password validation (at least 8 characters, 3 numbers, 1 special character)
+    const passwordRegex = /^(?=.*[0-9]{3})(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setError("Password must be at least 8 characters, contain 3 numbers, and 1 special character.");
+      return false;
+    }
+
+    return true;
+  }, [formData]);
+
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
+    
+    // Reset previous errors
+    setError("");
+
+    // Validate form
     if (!validateForm()) return;
 
     setIsLoading(true);
-    setError("");
 
     try {
       const response = await api.post("/user/login", formData);
@@ -49,138 +71,138 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [formData, navigate, setUser, validateForm]);
 
   return (
-    <>
-      <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center bg-blue-50 ">
+    <div className="min-h-screen w-full flex flex-col bg-gradient-to-br from-blue-50 to-blue-100">
+      <Navbar />
+      <div className="flex my-[20px] mx-auto rounded-2xl shadow-2xl md:max-w-6xl md:max-h-[600px] flex-col md:flex-row h-full bg-white overflow-hidden">
         {/* Left Side Image */}
-        <div id="shadow-l" className=" lg:max-w-4xl flex justify-center lg:h-[512px] bg-blue-600  rounded-l-3xl">
+        <div className="md:w-1/2 p-8  flex items-center justify-center">
           <img
-            src= {img}
+            src={loginImage}
             alt="LoginPageImage"
-            className="w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[512px] lg:h-[512px] object-contain animate-pulse"
+            className="w-full max-h-[500px] object-contain"
           />
         </div>
 
         {/* Right Side (Login Form) */}
-        <div id="shadow-r" className="p-8 rounded-r-3xl bg-white w-full max-w-lg lg:w-[350px] lg:h-[511.7px] flex flex-col justify-center">
-          <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2 text-center">
-            Log In
+        <div className="md:w-1/2 p-8 flex flex-col justify-center">
+          <h2 className="text-3xl font-bold text-blue-700 mb-4 text-center">
+            Welcome Back
           </h2>
-          <p className="text-gray-600 mb-8 text-center">Let's Help someone.</p>
+          <p className="text-gray-600 mb-6 text-center">
+            Help connect people, one login at a time
+          </p>
+
+          {error && (
+            <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-lg mb-4 text-center">
+              {error}
+            </div>
+          )}
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              {/* <label className="block text-black font-medium">
-                E-mail or phone number
-              </label> */}
+              <label 
+                htmlFor="email" 
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Email or Phone
+              </label>
               <input
-                type="text" // Change type to text for both email and phone
-                id="emailOrPhone" // Adjusted ID
-                name="emailOrPhone" // Adjusted name
-                placeholder="E-mail or phone number"
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:blue-purple-400 font-medium"
+                type="text"
+                id="email"
+                name="email"
+                placeholder="Enter email or phone number"
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition duration-300"
+                value={formData.email}
+                onChange={handleChange}
                 required
-                pattern="(^\d{10}$|^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$)" // Regex pattern for email or 10-digit phone
-                title="Please enter a valid email or a 10-digit phone number." // Tooltip for invalid input
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="flex flex-col w-full cursor-pointer relative font-medium"
+            <div className="relative">
+              <label 
+                htmlFor="password" 
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="password"
-                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mb-2"
-                  id="password"
-                  name="password"
-                  required
-                  pattern="^(?=.*[0-9]{3})(?=.*[!@#$%^&*]{1})(?=.*[a-zA-Z]).{8,}$"
-                  title="Password must be at least 8 characters long, contain 3 numbers, and 1 special characters."
-                />
-                <span
-                  className="absolute grid place-items-center top-2.5 right-3 text-2xl text-zinc-500 cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <IconEye /> : <IconEyeInvisible />}
-                </span>
+                Password
               </label>
-            </div>
-
-            <div>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                placeholder="Enter password"
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition duration-300"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
               <button
-                type="submit"
-                className="w-full text-white p-2 hover:bg-blue-600 rounded-[12px] bg-blue-700"
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-[50px] transform -translate-y-1/2 text-gray-500"
               >
-                Log in
+                {showPassword ? "Hide" : "Show"}
               </button>
             </div>
+
+            <button
+              type="submit"
+              className={`w-full text-white p-3 rounded-lg transition duration-300 ${
+                isLoading
+                  ? "bg-blue-400 cursor-not-allowed"
+                  : "bg-blue-700 hover:bg-blue-600"
+              }`}
+              disabled={isLoading}
+            >
+              {isLoading ? "Logging in..." : "Log in"}
+            </button>
           </form>
 
-          <div className="mt-3 text-center">
-            <p className="text-purple-500 text-sm  sm:mt-0 sm:text-right">
-              <Link to={"/ForgotPassword"} className="text-blue-600">
-                Forgot Password?
-              </Link>
-            </p>
+          <div className="mt-4 text-center">
+            <Link
+              to="/ForgotPassword"
+              className="text-blue-700 hover:underline text-sm"
+            >
+              Forgot Password?
+            </Link>
           </div>
 
-          <div className="mt-3">
-            <button className="w-full flex items-center justify-center text-black p-2 rounded-[12px] border border-black">
+          <div className="mt-4 space-y-4">
+            <div className="flex items-center justify-center">
+              <div className="border-t border-gray-300 flex-grow"></div>
+              <span className="px-4 text-gray-500 text-sm">
+                Or continue with
+              </span>
+              <div className="border-t border-gray-300 flex-grow"></div>
+            </div>
+
+            <button className="w-full flex items-center justify-center text-black p-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition duration-300">
               <img
                 src="https://img.icons8.com/color/24/000000/google-logo.png"
                 alt="Google logo"
-                className="w-5 h-5 mr-2 bg-[#FFFFFF]"
+                className="w-5 h-5 mr-2"
               />
-              Sign up with Google
+              Sign in with Google
             </button>
           </div>
 
-          <div className="mt-3 text-center">
-            <p className="text-gray-600 font-semibold">
-              Don't have an account?
-              <a href="/Signup" className="text-blue-500 font-medium ml-1">
+          <div className="mt-4 text-center">
+            <p className="text-gray-600">
+              Don't have an account?{" "}
+              <Link
+                to="/Signup"
+                className="text-blue-700 font-medium hover:underline"
+              >
                 Sign up
-              </a>
+              </Link>
             </p>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
 export default Login;
-
-function IconEyeInvisible(props) {
-  return (
-    <svg
-      viewBox="0 0 1024 1024"
-      fill="currentColor"
-      height="1em"
-      width="1em"
-      {...props}
-    >
-      <path d="M508 624a112 112 0 00112-112c0-3.28-.15-6.53-.43-9.74L498.26 623.57c3.21.28 6.45.43 9.74.43zm370.72-458.44L836 122.88a8 8 0 00-11.31 0L715.37 232.23Q624.91 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 000 51.5q56.7 119.43 136.55 191.45L112.56 835a8 8 0 000 11.31L155.25 889a8 8 0 0011.31 0l712.16-712.12a8 8 0 000-11.32zM332 512a176 176 0 01258.88-155.28l-48.62 48.62a112.08 112.08 0 00-140.92 140.92l-48.62 48.62A175.09 175.09 0 01332 512z" />
-      <path d="M942.2 486.2Q889.4 375 816.51 304.85L672.37 449A176.08 176.08 0 01445 676.37L322.74 798.63Q407.82 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 000-51.5z" />
-    </svg>
-  );
-}
-
-function IconEye(props) {
-  return (
-    <svg
-      viewBox="0 0 1024 1024"
-      fill="currentColor"
-      height="1em"
-      width="1em"
-      {...props}
-    >
-      <path d="M396 512a112 112 0 10224 0 112 112 0 10-224 0zm546.2-25.8C847.4 286.5 704.1 186 512 186c-192.2 0-335.4 100.5-430.2 300.3a60.3 60.3 0 000 51.5C176.6 737.5 319.9 838 512 838c192.2 0 335.4-100.5 430.2-300.3 7.7-16.2 7.7-35 0-51.5zM508 688c-97.2 0-176-78.8-176-176s78.8-176 176-176 176 78.8 176 176-78.8 176-176 176z" />
-    </svg>
-  );
-}

@@ -1,6 +1,4 @@
-import fs from "fs";
 import PDFDocument from "pdfkit";
-import path from "path";
 
 class InternshipOfferLetterGenerator {
   constructor(companyDetails = {}) {
@@ -17,10 +15,10 @@ class InternshipOfferLetterGenerator {
   _generateStyleConfig() {
     return {
       colors: {
-        primary: "#005A9C", // Professional blue
-        secondary: "#2C7BB6", // Lighter blue
-        text: "#333333", // Dark gray
-        background: "#F0F4F8", // Soft blue-gray
+        primary: "#005A9C",
+        secondary: "#2C7BB6",
+        text: "#333333",
+        background: "#F0F4F8",
       },
       fonts: {
         regular: "Helvetica",
@@ -45,7 +43,7 @@ class InternshipOfferLetterGenerator {
       endDate,
       tenure = 1,
     } = candidateDetails;
-    console.log(candidateDetails);
+
     const style = this._generateStyleConfig();
 
     return {
@@ -53,22 +51,12 @@ class InternshipOfferLetterGenerator {
       congratulatoryMessage: `Congratulations, ${name}!`,
       mainContent: `We are excited to extend an official online internship offer to you at ${this.companyDetails.name}. 
 
-After a thorough review of your application and impressive qualifications, we are delighted to welcome you to our virtual internship program. Your exceptional academic background and demonstrated skills perfectly align with our organizational mission of healthcare education and innovation.
-
 Internship Details:
-• department: ${departmentName}
+• Department: ${departmentName}
 • Start Date: ${startDate}
 • End Date: ${endDate}
 • Duration: ${tenure} months
 • Internship Type: 100% Remote/Online
-
-Key Learning Opportunities:
-• Comprehensive project-based learning
-• Direct mentorship from industry experts
-• Exposure to real-world healthcare education challenges
-• Opportunity to contribute to meaningful research and initiatives
-• Professional skill development workshops
-• Certificate of completion upon successful internship
 
 This offer is contingent upon:
 1. Submission of required academic and personal documents
@@ -98,9 +86,7 @@ This offer is contingent upon:
 2. Complete the online onboarding form within 5 business days
 3. Submit required documents electronically
 4. Confirm your participation via email
-5. Attend the mandatory virtual orientation
-
-Our internship coordination team is available to address any questions or concerns. We recommend scheduling a virtual information session to discuss your internship journey.`,
+5. Attend the mandatory virtual orientation`,
 
       legalDisclaimer: `This internship offer is made in good faith and is subject to the terms outlined in the internship agreement. ${this.companyDetails.name} reserves the right to modify or withdraw the offer if any information is found to be incorrect or misrepresented.`,
 
@@ -121,23 +107,24 @@ Our internship coordination team is available to address any questions or concer
     return new Promise((resolve, reject) => {
       const doc = new PDFDocument({ size: "A4", margin: 50 });
       const buffers = [];
+
+      // Collect the PDF data into buffers
       doc.on("data", (chunk) => buffers.push(chunk));
-      doc.on("end", () => resolve(Buffer.concat(buffers)));
+      doc.on("end", () => {
+        const pdfBuffer = Buffer.concat(buffers); // Combine all chunks into a single buffer
+        console.log("Internship offer letter generated in memory.");
+        resolve(pdfBuffer); // Resolve with the buffer
+      });
+
+      doc.on("error", (error) => {
+        console.error("Error generating PDF:", error.message);
+        reject(error);
+      });
+
       const style = this._generateStyleConfig();
       const template = this._getInternshipOfferContent(candidateDetails);
 
-      const outputDir = path.join(process.cwd(), "internship-offers");
-      fs.mkdirSync(outputDir, { recursive: true });
-
-      const offerLetterPath = path.join(
-        outputDir,
-        `${candidateDetails.name}_internship_offer.pdf`
-      );
-      const writeStream = fs.createWriteStream(offerLetterPath);
-
-      doc.pipe(writeStream);
-
-      // Company Logo and Header
+      // PDF Content
       doc
         .fillColor(style.colors.primary)
         .fontSize(style.fontSize.title)
@@ -222,20 +209,7 @@ Our internship coordination team is available to address any questions or concer
           link: template.footerContent.website,
         });
 
-      doc.end();
-
-      writeStream.on("finish", () => {
-        console.log(`Internship offer letter generated: ${offerLetterPath}`);
-        fs.unlink(offerLetterPath);
-        resolve();
-      });
-
-      writeStream.on("error", (error) => {
-        console.error(
-          `Internship offer letter generation error: ${error.message}`
-        );
-        reject(error);
-      });
+      doc.end(); // Finalize the PDF
     });
   }
 }

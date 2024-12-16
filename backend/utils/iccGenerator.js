@@ -63,20 +63,12 @@ We wish ${name} all the best for their future endeavors and look forward to witn
       const buffers = [];
       doc.on("data", (chunk) => buffers.push(chunk));
       doc.on("end", () => resolve(Buffer.concat(buffers)));
+      doc.on("error", (error) => {
+        console.log(error.message);
+        reject(error);
+      });
       const style = this._generateStyleConfig();
       const template = this._getCertificateContent(candidateDetails);
-      console.log("process.cwd", process.cwd());
-      const outputDir = path.join(process.cwd(), "completion-certificates");
-      fs.mkdirSync(outputDir, { recursive: true });
-
-      const certificatePath = path.join(
-        outputDir,
-        `${candidateDetails.name}_completion_certificate.pdf`
-      );
-      const writeStream = fs.createWriteStream(certificatePath);
-
-      doc.pipe(writeStream);
-
       // Background and Title
       doc
         .rect(0, 0, doc.page.width, doc.page.height)
@@ -126,19 +118,6 @@ We wish ${name} all the best for their future endeavors and look forward to witn
         });
 
       doc.end();
-
-      writeStream.on("finish", () => {
-        console.log(`Internship completion certificate generated: ${certificatePath}`);
-        fs.unlink(certificatePath);
-        resolve();
-      });
-
-      writeStream.on("error", (error) => {
-        console.error(
-          `Certificate generation error: ${error.message}`
-        );
-        reject(error);
-      });
     });
   }
 }

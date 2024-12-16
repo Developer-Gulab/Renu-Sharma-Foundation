@@ -396,36 +396,36 @@ const InternDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
       <motion.header
-        className="bg-white shadow-lg sticky top-0 z-10"
+        className="bg-blue-800 shadow-lg sticky top-0 z-10"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
         <div className="container mx-auto px-4 py-4 flex flex-wrap justify-between items-center">
           <div className="flex items-center space-x-3">
-            <FileText className="text-blue-600" size={32} />
-            <h1 className="text-2xl font-bold text-blue-800">
+            <FileText className="text-white" size={32} />
+            <h1 className="text-2xl font-bold text-white">
               Intern Dashboard
             </h1>
           </div>
           <div className="flex flex-wrap gap-4">
             <motion.button
               onClick={handleOfferLetterDownload}
-              className="flex items-center space-x-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition disabled:opacity-50"
+              className="flex items-center space-x-2 px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-600 transition disabled:opacity-50"
               whileHover={{ scale: 1.05 }}
               disabled={isLoading}
             >
               <Download size={18} />
-              <span>Offer Letter</span>
+              <span className="text-white">Offer Letter</span>
             </motion.button>
             <motion.button
               onClick={handleCompletionCertDownload}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition disabled:opacity-50"
+              className="flex items-center space-x-2 px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-600 transition disabled:opacity-50"
               whileHover={{ scale: 1.05 }}
               disabled={isLoading}
             >
               <CheckCircle2 size={18} />
-              <span>Completion Cert</span>
+              <span className="text-white">Completion Cert</span>
             </motion.button>
             <motion.button
               onClick={handleLogout}
@@ -433,7 +433,7 @@ const InternDashboard = () => {
               whileHover={{ scale: 1.05 }}
             >
               <LogOut size={18} />
-              <span>Logout</span>
+              <span className="text-white">Logout</span>
             </motion.button>
           </div>
         </div>
@@ -468,7 +468,7 @@ const InternDashboard = () => {
                   isWeekCompleted(week)
                     ? "bg-green-500 text-white"
                     : weekNumber === week
-                    ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                    ? "bg-blue-800 text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-blue-100"
                 }
                 ${isWeekCompleted(week) ? "cursor-not-allowed" : ""}`}
@@ -541,7 +541,7 @@ const InternDashboard = () => {
                   transition={{ delay: index * 0.1 }}
                   className="mb-6 bg-gray-50 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <h3 className="text-2xl font-semibold text-purple-700 mb-2 flex items-center">
+                  <h3 className="text-2xl font-semibold text-blue-800 mb-2 flex items-center">
                     <FileUp className="mr-2 text-blue-500" size={24} />
                     {taskItem.taskTitle}
                   </h3>
@@ -581,7 +581,7 @@ const InternDashboard = () => {
               <div className="mb-4">
                 <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                   <motion.div
-                    className="bg-blue-600 h-2.5 rounded-full"
+                    className="bg-blue-800 h-2.5 rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${uploadProgress}%` }}
                     transition={{ duration: 0.3 }}
@@ -647,7 +647,7 @@ const InternDashboard = () => {
                     >
                       <label
                         className={`flex flex-col w-full h-32 border-4 border-dashed rounded-lg group transition-colors duration-200 
-                          ${isDragging ? "border-blue-400 bg-blue-50" : ""}
+                          ${isDragging ? "border-blue-800 bg-blue-50" : ""}
                           ${
                             isSubmitting || isWeekCompleted(weekNumber)
                               ? "border-gray-300 bg-gray-50 cursor-not-allowed"
@@ -744,7 +744,7 @@ const InternDashboard = () => {
 
                     <motion.button
                       onClick={handleSubmit}
-                      className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                      className="w-full py-3 px-4 bg-blue-800 text-white font-bold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       disabled={isSubmitting || isWeekCompleted(weekNumber)}

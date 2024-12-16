@@ -4,7 +4,6 @@ import CustomError from "../utils/errorResponse.js";
 const globalErrorHandler = (err, req, res, next) => {
     let error = { ...err };
     error.message = err.message;
-    console.log(err.message);
     // Log error
     console.error("Global error handler:", err);
 
