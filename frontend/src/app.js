@@ -13,6 +13,12 @@ import { Toaster } from "react-hot-toast";
 import SuccessPage from "./pages/Success";
 import CancelPage from "./pages/Cancel";
 import Internship from './pages/Internship'
+import "react-toastify/dist/ReactToastify.css";
+import './styles/tailwind.css';
+import GalleryPage from "./pages/GalleryPage";
+
+
+
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children }) => {
@@ -36,6 +42,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/ContactPage" element={<ContactPage/>}/>
           <Route path="/internship" element={<Internship/>}/>
+          <Route path="/gallery" element={<GalleryPage/>} />
           <Route
             path="/dashboard"
             element={
