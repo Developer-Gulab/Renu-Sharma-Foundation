@@ -1,142 +1,159 @@
-import Stripe from "stripe";
-import dotenv from "dotenv";
-import Donation from "../models/Donation.models.js";
-dotenv.config();
-const stripe = new Stripe(process.env.STRIPESECRETKEY);
+import Razorpay from "razorpay";
+import crypto from "crypto";
+import PDFDocument from "pdfkit";
+import nodemailer from "nodemailer";
 
-//Create Checkout session
-export const createCheckout = async (req, res) => {
+//created order
+export const createOrder = async (req, res) => {
+  const { amount } = req.body;
+
+  const razorpay = new Razorpay({
+    key_id: process.env.KEY_ID,
+    key_secret: process.env.KEY_SECRET,
+  });
+
+  const options = {
+    amount: parseInt(parseFloat(amount) * 100),
+    currency: "INR",
+    receipt: "order_receipt_11",
+  };
+
   try {
-    const { name, email, phone, amount } = req.body;
-    //creating customer
-    const customer = await stripe.customers.create({
-      name: name, // Customer name
-      email: email, // Customer email,
-      phone: phone,
-    });
+    const order = await razorpay.orders.create(options);
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      customer: customer.id,
-      line_items: [
-        {
-          price_data: {
-            currency: "inr",
-            product_data: {
-              name: "Donation",
-              description: "Your Donation help us change lives!",
-              images: [
-                "https://www.creativefabrica.com/wp-content/uploads/2020/05/21/Donation-box-with-hand-logo-illustration-Graphics-4173454-1.jpg",
-              ],
-            },
-            unit_amount: amount * 100,
-          },
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      success_url: `${process.env.CLIENT_URL}/success`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel`,
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: "Checkout session created!",
-      sessionId: session.id,
-      sessionUrl: session.url,
-    });
+    res
+      .status(200)
+      .json({ success: true, message: "Payment process complete!", order });
   } catch (error) {
-    return res
+    res
       .status(500)
-      .json({ success: false, message: "Internal server error!" });
+      .send({ success: false, message: "Payment process failed!", error });
   }
 };
 
-//Handle Webhook
-export const handleWebhook = async (req, res) => {
-  const endpointSecret = process.env.WEBHOOK_SECRET;
-  const sig = req.headers["stripe-signature"];
-  let event;
+//Verifing order
+export const verifyOrder = async (req, res) => {
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      userDetails,
+      paymentDetails,
+    } = req.body;
+
+    const generatedSignature = crypto
+      .createHmac("sha256", process.env.KEY_SECRET)
+      .update(razorpay_order_id + "|" + razorpay_payment_id)
+      .digest("hex");
+
+    if (generatedSignature === razorpay_signature) {
+      generateReciept(paymentDetails, userDetails);
+      res
+        .status(200)
+        .json({ success: true, message: "Payment verified successfully!" });
+    } else {
+      res
+        .status(400)
+        .json({ success: false, message: "Payment verification failed!" });
+    }
   } catch (error) {
-    console.error(`Webhook signature verification failed: ${error.message}`);
-    return res.status(400).send(`Webhook error: ${error.message}`);
+    res.status(500).json({ success: false, message: "Internal server error!" });
   }
+};
 
-  switch (event.type) {
-    case "payment_intent.succeeded":
-      const paymentIntent = event.data.object;
-      const customerId = paymentIntent.customer;
+//Generate payment reciept
+export const generateReciept = (paymentDetails, userDetails) => {
+  const doc = new PDFDocument();
+  let buffers = [];
+  doc.on("data", buffers.push.bind(buffers));
+  doc.on("end", () => {
+    const pdfData = Buffer.concat(buffers);
+    sendReceipt(paymentDetails, userDetails, pdfData);
+  });
 
-      let customer = {
-        id: "N/A",
-        name: "N/A",
-        email: "N/A",
-      };
+  // Header
+  doc.fontSize(20).text("DONATION RECEIPT", { align: "center" });
+  doc.moveDown(2);
 
-      if (customerId) {
-        customer = await stripe.customers.retrieve(customerId);
-      }
+  // Receipt Information
+  doc.fontSize(12).text(`Receipt Date: ${new Date().toLocaleDateString()}`);
+  doc.text(`Organization Name: RenuSharma Foundation`);
+  doc.text(`Address: Delhi, India`);
+  doc.moveDown();
 
-      try {
-        const paymentDetails = new Donation({
-          paymentIntentId: paymentIntent.id,
-          amount: paymentIntent.amount_received / 100,
-          currency: paymentIntent.currency,
-          status: "succeeded",
-          customerId: customer.id,
-          fullName: customer.name || "N/A",
-          email: customer.email || "N/A",
-          phone: customer.phone,
-        });
+  // Donor Details
+  doc.fontSize(14).text("Donor Details:", { underline: true });
+  doc.fontSize(12).text(`Name: ${userDetails.name}`);
+  doc.text(`Email: ${userDetails.email}`);
+  userDetails.phone && doc.text(`Contact: ${userDetails.phone}`);
+  doc.moveDown();
 
-        // Save the failed payment info along with customer details
-        await paymentDetails.save();
-        console.log("Payment successfull!", paymentDetails);
-      } catch (error) {
-        console.error("Error saving payment details:", error);
-      }
-      break;
+  // Donation Information
+  doc.fontSize(14).text("Donation Information:", { underline: true });
+  doc.fontSize(12).text(`Contribution Amount: ₹ ${paymentDetails.amount}`);
+  doc.text(`Date of Donation: ${new Date().toLocaleDateString()}`);
+  doc.text(
+    `Purpose: Donation to provide medical care and improve health services for those in need.`
+  );
+  doc.moveDown();
 
-    //Payment Intent failed
-    case "payment_intent.payment_failed":
-      const failedPaymentIntent = event.data.object;
-      const failedCustomerId = failedPaymentIntent.customer;
+  // Acknowledgment Message
+  doc.text(
+    `Thank you for your generous contribution of ₹ ${paymentDetails.amount} to RenuSharma Foundation, a non-profit organization in India. Your support is greatly appreciated.`
+  );
+  doc.moveDown();
 
-      let failedCustomer = {
-        id: "N/A",
-        name: "N/A",
-        email: "N/A",
-      };
+  doc.text(`Donor Name: ${userDetails.name} `);
 
-      if (failedCustomerId) {
-        failedCustomer = await stripe.customers.retrieve(failedCustomerId);
-      }
+  // Finalize PDF
+  doc.end();
+  return buffers;
+};
 
-      // Save to the database
-      try {
-        // Extract payment and customer details for failed payment
-        const failedPaymentDetails = new Donation({
-          paymentIntentId: failedPaymentIntent.id,
-          amount: failedPaymentIntent.amount_received || 0,
-          currency: failedPaymentIntent.currency,
-          status: "failed",
-          customerId: failedCustomer.id,
-          fullName: failedCustomer.name || "N/A",
-          email: failedCustomer.email || "N/A",
-          phone: failedCustomer.phone,
-        });
+//Sending Receipt through email
+export const sendReceipt = (paymentDetails, userDetails, pdfData) => {
+  let transporter = nodemailer.createTransport({
+    service: "Gmail",
+    port: 587,
+    auth: {
+      user: process.env.SENDER,
+      pass: process.env.PASSKEY,
+    },
+  });
 
-        // Save the failed payment info along with customer details
-        await failedPaymentDetails.save();
-        console.log("Payment failed:", failedPaymentDetails);
-      } catch (error) {
-        console.error("Error saving failed payment details:", error);
-      }
-      break;
-    default:
-      console.log(`Unhandled event type: ${event.type}`);
-  }
-  res.json({ received: true });
+  transporter.sendMail({
+    from: `"RenuSharma Foundation" ${process.env.SENDER}`,
+    to: userDetails.email,
+    subject: "Payment Receipt",
+    text: "Please find your payment receipt attached.",
+    html: `
+    <p>Dear ${userDetails.name},</p>
+    <p>Thank you for your generous donation to Renusharma Foundation. We are pleased to acknowledge the receipt of your donation, which will help us continue our efforts to donation to provide medical care and improve health services for those in need.</p>
+    
+    <h3>Donation Details:</h3>
+    <ul>
+      <li><strong>Donor Name:</strong> ${userDetails.name}</li>
+      <li><strong>Donation Amount:</strong> ₹ ${paymentDetails.amount}</li>
+      <li><strong>Date of Donation:</strong> ${new Date().toLocaleDateString()}</li>
+      <li><strong>Transaction Reference ID:</strong> ${
+        paymentDetails.paymentId
+      }</li>
+    </ul>
+    
+    <p>Once again, thank you for your kind support.</p>
+    
+    <p>Best regards,<br>
+    <br>
+    RenuSharma Foundation
+  `,
+    attachments: [
+      {
+        filename: "DonationReciept.pdf",
+        content: pdfData,
+      },
+    ],
+  });
+
+  console.log("Receipt sent successfully!");
 };

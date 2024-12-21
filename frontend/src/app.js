@@ -15,16 +15,11 @@ import Login from "./pages/Login";
 import InternDashboard from "./pages/InternPanel";
 import ProjectOverview from "./pages/projectOverview.jsx";
 import DonatePage from "./pages/DonatePage";
-import SuccessPage from "./pages/Success";
-import CancelPage from "./pages/Cancel";
 import Internship from "./pages/Internship";
 import Navbar from "./components/Navbar.jsx";
 import "react-toastify/dist/ReactToastify.css";
-import './styles/tailwind.css';
+import "./styles/tailwind.css";
 import GalleryPage from "./pages/GalleryPage";
-
-
-
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children }) => {
@@ -48,7 +43,7 @@ const App = () => {
           <Route path={PATHS.LOGIN} element={<Login />} />
           <Route path={PATHS.CONTACT} element={<ContactPage />} />
           <Route path={PATHS.INTERNSHIP} element={<Internship />} />
-          <Route path={PATHS.GALLERY} element={<GalleryPage/>} />
+          <Route path={PATHS.GALLERY} element={<GalleryPage />} />
           <Route
             path={PATHS.DASHBOARD}
             element={
@@ -66,8 +61,6 @@ const App = () => {
             }
           />
           <Route path={PATHS.DONATE} element={<DonatePage />} />
-          <Route path={PATHS.SUCCESS} element={<SuccessPage />} />
-          <Route path={PATHS.CANCEL} element={<CancelPage />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -5,10 +5,10 @@ import submissionRouter from "../routes/submission.routes.js";
 import TaskRouter from "../routes/task.routes.js";
 import ProjectRouter from "../routes/project.routes.js";
 import certificateRouter from "../routes/certificate.routes.js";
-import contactRoutes from './contactRoutes.js';
-import imagesRoutes from './frontendImages.routes.js'
+import contactRoutes from "./contactRoutes.js";
+import imagesRoutes from "./frontendImages.routes.js";
 import paymentRouter from "./payment.routes.js";
-
+import donationRouter from "./donation.routes.js";
 
 const router = express.Router();
 
@@ -19,6 +19,7 @@ router.use("/task", TaskRouter);
 router.use("/project", ProjectRouter);
 router.use("/certificate", certificateRouter);
 router.use("/payment", paymentRouter);
+router.use("/donation", donationRouter);
 router.use("/contact", contactRoutes);
 router.use("/frontendImages", imagesRoutes);
 

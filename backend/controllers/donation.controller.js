@@ -1,11 +1,20 @@
-import Donation from "../models/Donation.models.js";
+import Donation from "../models/donation.models.js";
 
 //Add Donation Controller
 export const addDonation = async (req, res) => {
   try {
-    const { fullName, email, phone, amount } = req.body;
+    const { fullName, email, phone, amount, status, payment_Id, order_Id } =
+      req.body;
 
-    if (!fullName || !email || !phone || !amount) {
+    if (
+      !fullName ||
+      !email ||
+      !phone ||
+      !amount ||
+      !status ||
+      !payment_Id ||
+      !order_Id
+    ) {
       return res.status(400).json({
         success: false,
         message: "Please provide all required field!",
@@ -17,6 +26,10 @@ export const addDonation = async (req, res) => {
       email,
       phone,
       amount,
+      status,
+      payment_Id,
+      order_Id,
+      currency: "INR",
     });
 
     await donation.save();
@@ -24,7 +37,7 @@ export const addDonation = async (req, res) => {
     res.status(201).json({
       success: true,
       data: donation,
-      message: "Donation recorded successfully!",
+      message: "New Donation recorded successfully!",
     });
   } catch (error) {
     res.status(500).json({
