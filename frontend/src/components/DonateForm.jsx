@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import { loadStripe } from "@stripe/stripe-js";
 import toast from 'react-hot-toast';
 import api from '../api/api';
 
@@ -63,34 +62,74 @@ const DonateForm = () => {
             return;
         }
 
-        try {
-            //Load stripe
-            const stripe = await loadStripe(process.env.REACT_APP_PUBLISABLEKEY);
-            //Call create checkout api
-            const { data: session } = await api.post("/payment/create-checkout-session", formData);
-            const sessionId = session.sessionId;
-            if (sessionId) {
-                const result = await stripe.redirectToCheckout({
-                    sessionId: sessionId
-                })
 
-                if (result) {
-                    toast.success('Your Donation successfully completed!');
-                    setFormData({
-                        fullName: '',
-                        email: '',
-                        phone: '',
-                        amount: '',
-                    });
+
+        try {
+            const res = await api.post("/payment/create-order", formData);
+
+            var options = {
+                "key": process.env.REACT_APP_KEY_ID,
+                "amount": parseInt(parseFloat(formData.amount) * 100), // Amount in paise
+                "currency": "INR",
+                "name": "Renusharma Foundation",
+                "description": "Your Donation help us change lives!",
+                "order_id": res?.data?.order?.id,
+                "handler": async (response) => {
+
+                    const paymentDetails = {
+                        orderId: response.razorpay_order_id,
+                        paymentId: response.razorpay_payment_id,
+                        amount: formData.amount
+                    }
+
+                    const userDetails = {
+                        name: formData.fullName,
+                        email: formData.email
+                    }
+
+                    const verificationResult = await api.post("/payment/verify-order", { razorpay_order_id: response.razorpay_order_id, razorpay_payment_id: response.razorpay_payment_id, razorpay_signature: response.razorpay_signature, paymentDetails, userDetails });
+
+                    const status = verificationResult?.data?.success == true ? "Success" : "Fail";
+
+                    const payload = {
+                        fullName: formData.fullName,
+                        email: formData.email,
+                        phone: formData.phone,
+                        amount: formData.amount,
+                        status,
+                        payment_Id: response.razorpay_payment_id,
+                        order_Id: response.razorpay_order_id
+                    }
+                    await api.post("/donation/add-donation", payload);
+
+                    toast.success("Payment completed successfully!");
+                },
+                "prefill": {
+                    "name": formData.fullName,
+                    "email": formData.email,
+                    "contact": formData.phone
+                },
+                "theme": {
+                    "color": "blue"
                 }
-            }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
         } catch (error) {
             console.log(error)
             toast.error(error.response?.data?.message || 'Something is wrong!');
         } finally {
             setLoading(false);
+            setFormData({
+                fullName: '',
+                email: '',
+                phone: '',
+                amount: '',
+            });
+            customInput.current.value = "";
             setActiveIndex("")
         }
+
     };
 
     return (
@@ -98,7 +137,7 @@ const DonateForm = () => {
             className=" !m-auto lg:max-w-2xl xl:max-w-3xl bg-white shadow-lg rounded-lg overflow-hidden !w-full md:!w-[90vw] lg:!w-fit "
         >
             <div
-                className="bg-gradient-to-r bg-[#292350] xl:!p-6 !p-3 text-white text-center"
+                className="bg-gradient-to-r bg-[#1e40af] xl:!p-6 !p-3 text-white text-center"
             >
                 <h1 className="text-2xl xl:text-3xl font-bold text-white">Make a Difference</h1>
                 <p className="!mt-2 text-purple-200">Your donation helps us change lives!</p>
@@ -114,21 +153,21 @@ const DonateForm = () => {
                         <button
                             type="button"
                             onClick={() => changeIndex(1)}
-                            className={`!px-2 xl:!px-3 !py-2  text-white rounded-lg transition-all duration-300 ${activeIndex === 1 ? "bg-blue-800" : "hover:bg-[#352896] hover:text-[103%] bg-[#120b54]"}`}
+                            className={`!px-2 xl:!px-3 !py-2  text-white rounded-lg transition-all duration-300 ${activeIndex === 1 ? "bg-blue-500" : "hover:bg-[#254ed4] hover:text-[103%] bg-[#1e40af]"}`}
                         >
                             &#8377;10
                         </button>
                         <button
                             type="button"
                             onClick={() => changeIndex(2)}
-                            className={`!px-2 xl:!px-3 !py-2 text-white rounded-lg transition-all duration-300  ${activeIndex === 2 ? "bg-blue-800" : "hover:bg-[#352896] hover:text-[103%] bg-[#120b54]"}`}
+                            className={`!px-2 xl:!px-3 !py-2 text-white rounded-lg transition-all duration-300  ${activeIndex === 2 ? "bg-blue-500" : "hover:bg-[#254ed4] hover:text-[103%] bg-[#1e40af]"}`}
                         >
                             &#8377;20
                         </button>
                         <button
                             type="button"
                             onClick={() => changeIndex(3)}
-                            className={`!px-2 xl:!px-3 !py-2 text-white rounded-lg transition-all duration-300  ${activeIndex === 3 ? "bg-blue-800" : "hover:bg-[#352896] hover:text-[103%] bg-[#120b54]"}`}
+                            className={`!px-2 xl:!px-3 !py-2 text-white rounded-lg transition-all duration-300  ${activeIndex === 3 ? "bg-blue-500" : "hover:bg-[#254ed4] hover:text-[103%] bg-[#1e40af]"}`}
                         >
                             &#8377;50
                         </button>
@@ -138,7 +177,7 @@ const DonateForm = () => {
                             type="number"
                             name='amount'
                             placeholder="Enter Amont"
-                            className="flex-1 !px-2 w-full xl:!px-4 !py-2 border border-[#281d77] rounded-lg focus:outline-none focus:ring-2 focus:!ring-[#281d77]"
+                            className="flex-1 !px-2 w-full xl:!px-4 !py-2 border border-[#281d77] rounded-lg focus:outline-none "
                         />
                     </div>
                 </div>
@@ -155,7 +194,7 @@ const DonateForm = () => {
                         value={formData.fullName}
                         onChange={handleChange}
                         placeholder="Enter your name"
-                        className="w-full !px-2 xl:!px-4 !py-2  border border-[#281d77] rounded-lg focus:outline-none focus:ring-2 focus:!ring-[#281d77]"
+                        className="w-full !px-2 xl:!px-4 !py-2  border border-[#281d77] rounded-lg focus:outline-none "
                     />
                 </div>
                 {/* Email */}
@@ -168,7 +207,7 @@ const DonateForm = () => {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="Enter your email"
-                        className="w-full !px-2 xl:!px-4 !py-2  border border-[#281d77] rounded-lg focus:outline-none focus:ring-2 focus:!ring-[#281d77]"
+                        className="w-full !px-2 xl:!px-4 !py-2  border border-[#281d77] rounded-lg focus:outline-none "
                     />
                 </div>
 
@@ -180,7 +219,7 @@ const DonateForm = () => {
                         type="number"
                         name="phone"
                         placeholder='Enter Phone no.'
-                        className="w-full !px-2 xl:!px-4 !py-2  border border-[#281d77] rounded-lg focus:outline-none focus:ring-2 focus:!ring-[#281d77]"
+                        className="w-full !px-2 xl:!px-4 !py-2  border border-[#281d77] rounded-lg focus:outline-none "
                         value={formData.phone}
                         onChange={handleChange}
                     />
@@ -190,7 +229,7 @@ const DonateForm = () => {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-[#292350] text-white !px-2 xl:!px-4 !py-2 hover:text-[104%] font-semibold rounded-lg hover:bg-[#352896] transition duration-200"
+                    className="w-full bg-[#1e40af] text-white !px-2 xl:!px-4 !py-2 hover:text-[104%] font-semibold rounded-lg hover:bg-[#352896] transition duration-200"
                 >
                     {loading ? "Processing" : "Donate Now"}
                 </button>

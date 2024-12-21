@@ -6,8 +6,6 @@ export const PATHS = {
   DASHBOARD: "/dashboard",
   OVERVIEW: "/overview",
   DONATE: "/donate",
-  SUCCESS: "/success",
-  CANCEL: "/cancel",
-  INTERNSHIP: '/intership',
-  GALLERY:'/gallery'
+  INTERNSHIP: "/intership",
+  GALLERY: "/gallery",
 };

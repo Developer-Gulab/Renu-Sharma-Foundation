@@ -12,9 +12,6 @@ const donationSchema = new mongoose.Schema({
   phone: {
     type: Number,
   },
-  customerId: {
-    type: String,
-  },
   amount: {
     type: Number,
     required: true,
@@ -25,13 +22,16 @@ const donationSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["succeeded", "failed", "pending"], // 'succeeded' or 'failed'
+    enum: ["Success", "Fail", "Pending"],
     required: true,
   },
-  paymentIntentId: {
+  payment_Id: {
     type: String,
     required: true,
-    unique: true,
+  },
+  order_Id: {
+    type: String,
+    required: true,
   },
   createdAt: {
     type: Date,
